@@ -1,0 +1,15 @@
+html, body, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0; /* Prevent default body margin */
+}
+
+#root {
+    background-color: black;
+    /* Removed position: fixed to allow scrolling */
+    position: relative; /* Or simply remove this line as it defaults to 'relative' */
+}
+
+body {
+    overflow: auto; /* Ensure page can scroll */
+}
