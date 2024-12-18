@@ -6,6 +6,9 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef, useState } from "react";
+import { ScrollTrigger } from "gsap/all";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   const carouselRef = useRef(null);
@@ -38,6 +41,26 @@ function App() {
     );
   }, []);
 
+  useGSAP(() => {
+    gsap.set(canvasRef.current, {
+      clipPath: "polygon(14% 0, 72% 0, 88% 90%, 0 95%)",
+      borderRadius: "0% 0% 40% 10%",
+    });
+    gsap.from(canvasRef.current, {
+      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+      borderRadius: "0% 0% 0% 0%",
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: canvasRef.current,
+        start: "center center",
+        end: "bottom center",
+        scrub: true,
+        invalidateOnRefresh: true,
+        immediateRender: false,
+      },
+    });
+  });
+
   const canvasRef = useRef();
 
   const handleMouseMove = (e) => {
@@ -54,7 +77,8 @@ function App() {
   };
   return (
     <>
-      <div ref={canvasRef} onMouseMove={handleMouseMove} className="w-full h-screen relative">
+    <div>
+      <div ref={canvasRef} onMouseMove={handleMouseMove} className="w-full h-screen relative mask-clip-path z-10 absolute-center">
         <div className="w-full h-screen absolute overflow-hidden">
           <video
             src={videos[currentVideo]}
@@ -98,6 +122,10 @@ function App() {
         </Canvas>
         {/* Carousel Section */}
       </div>
+      <div className="text-black text-[20vw] font-[] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          Kashiyatra
+      </div>
+    </div>
       <div className="w-full h-screen bg-white">
         {" "}
         {/* This will allow scrolling */}
